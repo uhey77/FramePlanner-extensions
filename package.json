@@ -1,0 +1,115 @@
+{
+  "name": "frameplanner",
+  "displayName": "FramePlanner",
+  "description": "Open FramePlanner inside VS Code or Cursor and manage exported NDJSON files.",
+  "version": "0.0.1",
+  "publisher": "frameplanner",
+  "preview": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/frameplanner-vscode.git"
+  },
+  "homepage": "https://frameplanner.manga-farm.online/",
+  "bugs": {
+    "url": "https://github.com/example/frameplanner-vscode/issues"
+  },
+  "keywords": [
+    "frameplanner",
+    "manga",
+    "ndjson",
+    "cursor",
+    "vscode"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:frameplanner.openPanel",
+    "onCommand:frameplanner.openCurrentNdjson",
+    "onCommand:frameplanner.importExportedNdjson",
+    "onCommand:frameplanner.openInBrowser"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "frameplanner.openPanel",
+        "title": "FramePlanner: Open Panel",
+        "category": "FramePlanner"
+      },
+      {
+        "command": "frameplanner.openCurrentNdjson",
+        "title": "FramePlanner: Open Current NDJSON",
+        "category": "FramePlanner"
+      },
+      {
+        "command": "frameplanner.importExportedNdjson",
+        "title": "FramePlanner: Import Exported NDJSON",
+        "category": "FramePlanner"
+      },
+      {
+        "command": "frameplanner.openInBrowser",
+        "title": "FramePlanner: Open In Browser",
+        "category": "FramePlanner"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "frameplanner.openCurrentNdjson",
+          "when": "resourceExtname == .ndjson",
+          "group": "navigation@20"
+        },
+        {
+          "command": "frameplanner.importExportedNdjson",
+          "when": "resourceExtname == .ndjson",
+          "group": "navigation@21"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "FramePlanner",
+      "properties": {
+        "frameplanner.baseUrl": {
+          "type": "string",
+          "default": "https://frameplanner.manga-farm.online/",
+          "description": "FramePlanner Web app URL. Only https:// URLs or http://localhost URLs are allowed."
+        },
+        "frameplanner.preferExternalBrowser": {
+          "type": "boolean",
+          "default": false,
+          "description": "Open FramePlanner in the system browser instead of the VS Code panel."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist dist-test *.vsix .vscode-test",
+    "compile": "node esbuild.mjs",
+    "compile:tests": "tsc -p src/test/tsconfig.json",
+    "build": "pnpm run clean && pnpm run compile && pnpm run compile:tests",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:integration": "node ./dist-test/src/test/runIntegrationTest.js",
+    "test": "pnpm run build && pnpm run test:unit",
+    "test:all": "pnpm run test && pnpm run test:integration",
+    "package": "pnpm run build && pnpm exec vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.3",
+    "@types/vscode": "^1.99.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.2",
+    "esbuild": "^0.25.4",
+    "mocha": "^11.1.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  },
+  "packageManager": "pnpm@10.32.1"
+}
